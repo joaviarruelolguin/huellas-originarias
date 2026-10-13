@@ -1,0 +1,37 @@
+<div class="timeline">
+  <div class="row">
+    <button
+      type="button"
+      class="nav-btn"
+      (click)="prev()"
+      [disabled]="currentIndex === 0"
+      aria-label="Momento anterior">
+      <ion-icon name="chevron-back"></ion-icon>
+    </button>
+
+    <div class="current">
+      <span class="label">{{ current?.label }}</span>
+      <span class="desc">{{ current?.shortDescription }}</span>
+    </div>
+
+    <button
+      type="button"
+      class="nav-btn"
+      (click)="next()"
+      [disabled]="currentIndex === periods.length - 1"
+      aria-label="Momento siguiente">
+      <ion-icon name="chevron-forward"></ion-icon>
+    </button>
+  </div>
+
+  <div class="dots" role="tablist">
+    <button
+      type="button"
+      *ngFor="let p of periods; let i = index"
+      class="dot"
+      [class.active]="i === currentIndex"
+      (click)="goTo(i)"
+      [attr.aria-label]="p.label">
+    </button>
+  </div>
+</div>

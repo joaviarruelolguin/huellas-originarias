@@ -1,0 +1,25 @@
+<ion-content [fullscreen]="true">
+  <!-- Mapa con las manchas de territorio -->
+  <app-map
+    [communities]="communities"
+    [activePeriod]="currentPeriod.id"
+    (territoryClick)="onTerritoryClick($event)">
+  </app-map>
+
+  <!-- FAB: mi ubicación -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="fab-locate">
+    <ion-fab-button (click)="locate()" aria-label="Mi ubicación">
+      <ion-icon name="locate"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <!-- Línea de tiempo (momentos históricos) -->
+  <app-timeline
+    [periods]="periods"
+    [currentIndex]="currentIndex()"
+    (periodChange)="onPeriodChange($event)">
+  </app-timeline>
+
+  <!-- Bienvenida (overlay) -->
+  <app-welcome *ngIf="showWelcome()" (enter)="enter()"></app-welcome>
+</ion-content>
