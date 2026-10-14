@@ -41,7 +41,7 @@ const RAW: RawCommunity[] = [
   {
     id: 'caz-cuyo',
     name: 'Cazadores de Cuyo',
-    color: '#d4a373',
+    color: '#0891b2',
     periods: {
       '12000ac': {
         timeRange: 'Desde hace ~10.000 años', modeOfLife: 'Cazadores-recolectores de la montaña y el valle.',
@@ -63,7 +63,7 @@ const RAW: RawCommunity[] = [
   {
     id: 'caz-centro',
     name: 'Cazadores del Centro',
-    color: '#b08968',
+    color: '#dc2626',
     periods: {
       '12000ac': {
         timeRange: 'Desde hace ~11.000 años', modeOfLife: 'Cazadores-recolectores de las sierras y llanuras.',
@@ -108,7 +108,7 @@ const RAW: RawCommunity[] = [
   {
     id: 'caz-pampa',
     name: 'Cazadores de la Pampa',
-    color: '#a78a6a',
+    color: '#7c3aed',
     periods: {
       '12000ac': {
         timeRange: 'Desde hace ~11.000 años', modeOfLife: 'Cazadores-recolectores de la llanura.',
