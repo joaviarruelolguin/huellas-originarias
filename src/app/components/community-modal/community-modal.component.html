@@ -23,14 +23,14 @@
       </ion-spinner>
 
       <img
-        *ngIf="!imageLoading() && !imageError()"
+        *ngIf="!imageError()"
         [src]="data?.images[0]"
         [alt]="community?.name"
         class="hero-img"
+        [style.display]="imageLoading() ? 'none' : 'block'"
         (load)="onImageLoad()"
         (error)="onImageError()"
-        #imgRef
-        (load)="checkImageLoaded($event.target)" />
+        #imgRef />
 
       <div *ngIf="imageError()" class="image-error">
         <ion-icon name="image-off"></ion-icon>

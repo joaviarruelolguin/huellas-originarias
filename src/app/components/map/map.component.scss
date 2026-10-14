@@ -36,9 +36,9 @@
   margin-left: 16px !important;
 }
 
-/* Atribución en bottom-left, arriba del zoom */
+/* Atribución en bottom-left, por encima de la línea de tiempo */
 .leaflet-control-attribution {
-  margin-bottom: 50px !important;
+  margin-bottom: 12px !important;
   margin-left: 16px !important;
   background: rgba(10, 14, 20, 0.85) !important;
   backdrop-filter: blur(8px) !important;
@@ -48,6 +48,11 @@
   border: 1px solid var(--border) !important;
   font-size: 0.65rem !important;
   color: #94a3b8 !important;
+  z-index: 1001 !important;
+}
+
+.leaflet-bottom.leaflet-left {
+  z-index: 1001;
 }
 
 .leaflet-control-attribution a {

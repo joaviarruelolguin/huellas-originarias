@@ -1,2 +1,58 @@
-// For information on how to create your own theme, please refer to:
-// https://ionicframework.com/docs/theming/
+/*
+ * Design system — Huellas Originarias
+ * Paleta dark indigo -> violeta (tema oscuro).
+ */
+:root {
+  /* Primary: índigo */
+  --ion-color-primary: #6366f1;
+  --ion-color-primary-rgb: 99, 102, 241;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #5558e6;
+  --ion-color-primary-tint: #7174ff;
+
+  /* Secondary: violeta */
+  --ion-color-secondary: #8b5cf6;
+  --ion-color-secondary-rgb: 139, 92, 246;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #7a51d9;
+  --ion-color-secondary-tint: #966df7;
+
+  /* Fondo y texto (dark) */
+  --ion-background-color: #0a0e14;
+  --ion-background-color-rgb: 10, 14, 20;
+  --ion-text-color: #e2e8f0;
+  --ion-text-color-rgb: 226, 232, 240;
+  --ion-text-color-step-50: #f8fafc;
+  --ion-text-color-step-100: #e2e8f0;
+  --ion-text-color-step-200: #cbd5e1;
+  --ion-text-color-step-300: #94a3b8;
+  --ion-text-color-step-400: #64748b;
+  --ion-text-color-step-50: #f8fafc;
+  --ion-text-color-step-100: #e2e8f0;
+  --ion-text-color-step-200: #cbd5e1;
+  --ion-text-color-step-300: #94a3b8;
+  --ion-text-color-step-400: #64748b;
+
+  /* Superficies */
+  --ion-color-medium: #64748b;
+  --ion-color-medium-rgb: 100, 116, 139;
+  --ion-color-danger: #f43f5e;
+  --ion-color-danger-rgb: 244, 63, 94;
+
+  /* Peligro */
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-shade: #d73752;
+  --ion-color-danger-tint: #f5516d;
+
+  /* Bordes y superficies propias */
+  --surface: rgba(255, 255, 255, 0.06);
+  --surface-strong: rgba(255, 255, 255, 0.10);
+  --border: rgba(255, 255, 255, 0.10);
+  --grad-primary: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+}
+
+:root {
+  color-scheme: dark;
+}

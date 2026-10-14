@@ -162,15 +162,8 @@ export class MapComponent implements AfterViewInit, OnChanges, OnDestroy {
     }).addTo(this.map);
 
     if (accuracy && accuracy > 0) {
-      // Círculo de precisión en metros (radio real), sin dashArray para mejor rendimiento
-      this.userAccuracyCircle = L.circle(latlng, {
-        radius: accuracy * 1.1,
-        fillColor: '#3b82f6',
-        fillOpacity: 0.08,
-        color: '#3b82f6',
-        weight: 1,
-        interactive: false, // No bloquea clicks
-      }).addTo(this.map);
+      // Círculo de precisión oculto deliberadamente: se distorsiona al hacer zoom
+      // en el CRS personalizado y genera un overlay azul molesto. Keeping only dot.
     }
   }
 
