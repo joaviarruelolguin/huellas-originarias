@@ -46,6 +46,22 @@ export class HomePage implements OnDestroy {
   /** IDs de comunidades seleccionadas en el filtro. */
   readonly selectedIds = signal<string[]>([]);
 
+  private periodSelectedIds = new Map<string, string[]>();
+
+  private ensureSelectionForPeriod(periodId: string): void {
+    if (!this.periodSelectedIds.has(periodId)) {
+      const allIds = this.communities
+        .filter((c) => c.periods[periodId])
+        .map((c) => c.id);
+      this.periodSelectedIds.set(periodId, allIds);
+    }
+    this.selectedIds.set(this.periodSelectedIds.get(periodId) ?? []);
+  }
+
+  constructor() {
+    this.ensureSelectionForPeriod(this.currentPeriod.id);
+  }
+
   private modal: HTMLIonModalElement | null = null;
 
   get currentPeriod() {
@@ -65,6 +81,7 @@ export class HomePage implements OnDestroy {
 
   onPeriodChange(index: number): void {
     this.currentIndex.set(index);
+    this.ensureSelectionForPeriod(this.currentPeriod.id);
   }
 
   async onTerritoryClick(community: Community): Promise<void> {
