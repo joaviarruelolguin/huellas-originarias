@@ -11,8 +11,9 @@ import {
   ViewChild,
 } from '@angular/core';
 import * as L from 'leaflet';
-import type { Feature, FeatureCollection } from 'geojson';
+import type { Feature, FeatureCollection, Geometry } from 'geojson';
 import type { Community } from '../../models/models';
+import { smoothRing } from '../../utils/geo';
 
 /**
  * Mapa de Argentina con las manchas de territorio de las comunidades
@@ -126,10 +127,27 @@ export class MapComponent implements AfterViewInit, OnChanges, OnDestroy {
     const features: Feature[] = this.communities
       .filter((c) => c.periods[this.activePeriod])
       .map((c) => {
-        const data = c.periods[this.activePeriod];
+        const geom = c.periods[this.activePeriod].territory.geometry;
+        let geometry: Geometry;
+        if (geom.type === 'Polygon') {
+          geometry = {
+            type: 'Polygon',
+            coordinates: geom.coordinates.map((ring) => smoothRing(ring, 3)),
+          };
+        } else if (geom.type === 'MultiPolygon') {
+          geometry = {
+            type: 'MultiPolygon',
+            coordinates: geom.coordinates.map((poly) =>
+              poly.map((ring) => smoothRing(ring, 3))
+            ),
+          };
+        } else {
+          geometry = geom;
+        }
         return {
-          ...data.territory,
-          properties: { ...(data.territory.properties ?? {}), communityId: c.id },
+          type: 'Feature',
+          properties: { communityId: c.id },
+          geometry,
         } as Feature;
       });
 
