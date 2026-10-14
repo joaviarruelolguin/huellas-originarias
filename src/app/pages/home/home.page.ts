@@ -5,6 +5,7 @@ import { MapComponent } from '../../components/map/map.component';
 import { TimelineComponent } from '../../components/timeline/timeline.component';
 import { CommunityModalComponent } from '../../components/community-modal/community-modal.component';
 import { WelcomeComponent } from '../../components/welcome/welcome.component';
+import { LegendComponent } from '../../components/legend/legend.component';
 import { COMMUNITIES } from '../../data/communities';
 import { PERIODS } from '../../data/periods';
 import type { Community } from '../../models/models';
@@ -29,6 +30,7 @@ import type { Community } from '../../models/models';
     TimelineComponent,
     CommunityModalComponent,
     WelcomeComponent,
+    LegendComponent,
   ],
 })
 export class HomePage implements OnDestroy {
@@ -46,6 +48,12 @@ export class HomePage implements OnDestroy {
 
   get currentPeriod() {
     return this.periods[this.currentIndex()];
+  }
+
+  /** Comunidades que tienen datos en el período activo. */
+  get activeCommunities() {
+    const id = this.currentPeriod.id;
+    return this.communities.filter((c) => c.periods[id]);
   }
 
   enter(): void {

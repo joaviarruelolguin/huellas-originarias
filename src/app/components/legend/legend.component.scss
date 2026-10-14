@@ -1,0 +1,71 @@
+.legend {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 1000;
+  max-width: 220px;
+}
+
+.legend-toggle {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(10, 14, 20, 0.82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #e2e8f0;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  ion-icon {
+    font-size: 16px;
+  }
+}
+
+.legend-list {
+  margin: 8px 0 0;
+  padding: 8px;
+  border-radius: 16px;
+  background: rgba(10, 14, 20, 0.82);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  list-style: none;
+  max-height: 40vh;
+  overflow-y: auto;
+}
+
+.legend-list li {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 8px;
+  border-radius: 8px;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.06);
+  }
+}
+
+.swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+}
+
+.name {
+  color: #e2e8f0;
+  font-size: 0.82rem;
+  font-weight: 500;
+}

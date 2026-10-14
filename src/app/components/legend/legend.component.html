@@ -1,0 +1,13 @@
+<div class="legend" [class.open]="open()">
+  <button type="button" class="legend-toggle" (click)="toggle()" aria-label="Leyenda">
+    <ion-icon [name]="open() ? 'close' : 'layers'"></ion-icon>
+    <span>Comunidades</span>
+  </button>
+
+  <ul class="legend-list" *ngIf="open()">
+    <li *ngFor="let c of communities">
+      <span class="swatch" [style.background]="c.color"></span>
+      <span class="name">{{ c.name }}</span>
+    </li>
+  </ul>
+</div>
