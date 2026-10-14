@@ -30,8 +30,31 @@
   }
 }
 
-/* Prevenir que el zoom control se superponga al FAB */
+/* Prevenir que el zoom control se superponga a los controles bottom */
 .leaflet-control-zoom {
   margin-bottom: 90px !important;
-  margin-right: 16px !important;
+  margin-left: 16px !important;
+}
+
+/* Atribución en bottom-left, arriba del zoom */
+.leaflet-control-attribution {
+  margin-bottom: 50px !important;
+  margin-left: 16px !important;
+  background: rgba(10, 14, 20, 0.85) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  border-radius: 8px !important;
+  padding: 4px 8px !important;
+  border: 1px solid var(--border) !important;
+  font-size: 0.65rem !important;
+  color: #94a3b8 !important;
+}
+
+.leaflet-control-attribution a {
+  color: #64748b !important;
+  text-decoration: none;
+}
+
+.leaflet-control-attribution a:hover {
+  color: #fff !important;
 }

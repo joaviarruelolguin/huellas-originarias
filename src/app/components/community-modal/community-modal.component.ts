@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   IonButton,
@@ -7,6 +7,7 @@ import {
   IonHeader,
   IonIcon,
   IonToolbar,
+  IonSpinner,
   ModalController,
 } from '@ionic/angular';
 import type { Community, Period } from '../../models/models';
@@ -20,7 +21,7 @@ import type { Community, Period } from '../../models/models';
   templateUrl: 'community-modal.component.html',
   styleUrls: ['community-modal.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonToolbar],
+  imports: [CommonModule, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonSpinner, IonToolbar],
 })
 export class CommunityModalComponent {
   @Input() community?: Community;
@@ -31,6 +32,18 @@ export class CommunityModalComponent {
 
   get data() {
     return this.community?.periods[this.activePeriodId];
+  }
+
+  readonly imageLoading = signal(true);
+  readonly imageError = signal(false);
+
+  onImageLoad(): void {
+    this.imageLoading.set(false);
+  }
+
+  onImageError(): void {
+    this.imageLoading.set(false);
+    this.imageError.set(true);
   }
 
   dismiss(): void {

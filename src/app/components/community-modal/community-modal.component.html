@@ -14,12 +14,29 @@
 
 <ion-content class="modal-content">
   <div class="body">
-    <img
-      *ngIf="data?.images?.length"
-      [src]="data?.images[0]"
-      [alt]="community?.name"
-      class="hero-img" />
-    <p class="photo-credit" *ngIf="data?.photoCredit">{{ data?.photoCredit }}</p>
+    <div class="hero-container" *ngIf="data?.images?.length">
+      <ion-spinner
+        *ngIf="imageLoading()"
+        name="crescent"
+        class="image-spinner"
+        color="primary">
+      </ion-spinner>
+
+      <img
+        *ngIf="!imageLoading() && !imageError()"
+        [src]="data?.images[0]"
+        [alt]="community?.name"
+        class="hero-img"
+        (load)="onImageLoad()"
+        (error)="onImageError()" />
+
+      <div *ngIf="imageError()" class="image-error">
+        <ion-icon name="image-off"></ion-icon>
+        <span>No se pudo cargar la imagen</span>
+      </div>
+
+      <p class="photo-credit" *ngIf="data?.photoCredit && !imageLoading()">{{ data?.photoCredit }}</p>
+    </div>
 
     <p class="lineage" *ngIf="community?.lineage">
       <ion-icon name="people"></ion-icon>

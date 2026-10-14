@@ -63,7 +63,9 @@ export class MapComponent implements AfterViewInit, OnChanges, OnDestroy {
   private map: L.Map | null = null;
   private territories: L.GeoJSON | null = null;
   private userLocationMarker: L.CircleMarker | null = null;
+  private userAccuracyCircle: L.Circle | null = null;
   private resizeObserver?: ResizeObserver;
+  private lastResizeTime = 0;
 
   ngAfterViewInit(): void {
     this.map = L.map(this.canvasEl.nativeElement, {
@@ -81,7 +83,8 @@ export class MapComponent implements AfterViewInit, OnChanges, OnDestroy {
     });
 
     // Atribución propia (el mapa base es CC BY-SA: hay que atribuir al autor)
-    L.control.attribution({ prefix: false }).addTo(this.map);
+    // Posición bottom-left para que no tape la línea de tiempo
+    L.control.attribution({ prefix: false, position: 'bottomleft' }).addTo(this.map);
 
     // Capa base: SVG vectorial de Argentina (nítido a cualquier zoom)
     L.imageOverlay('assets/maps/argentina-location-map.svg', MAP_BOUNDS, {
@@ -90,7 +93,8 @@ export class MapComponent implements AfterViewInit, OnChanges, OnDestroy {
       attribution: 'Mapa: NordNordWest / Wikimedia Commons (CC BY-SA 3.0)',
     }).addTo(this.map);
 
-    L.control.zoom({ position: 'bottomright' }).addTo(this.map);
+    // Zoom control en bottom-left (debajo de la atribución)
+    L.control.zoom({ position: 'bottomleft' }).addTo(this.map);
 
     // Encajar la vista a todo el territorio
     this.map.fitBounds(MAP_BOUNDS, { padding: [30, 30] });
@@ -99,8 +103,17 @@ export class MapComponent implements AfterViewInit, OnChanges, OnDestroy {
 
     // Ionic anima la entrada de la página: forzamos recálculo de tamaño
     setTimeout(() => this.invalidateSize(), 0);
+    
+    // ResizeObserver optimizado: solo invalidar si pasó tiempo suficiente
+    // y no durante zoom/pan (Leaflet maneja eso internamente)
     if (typeof ResizeObserver !== 'undefined') {
-      this.resizeObserver = new ResizeObserver(() => this.invalidateSize());
+      this.resizeObserver = new ResizeObserver(() => {
+        const now = Date.now();
+        if (now - this.lastResizeTime > 300) {
+          this.lastResizeTime = now;
+          this.invalidateSize();
+        }
+      });
       this.resizeObserver.observe(this.canvasEl.nativeElement);
     }
   }
@@ -133,6 +146,9 @@ export class MapComponent implements AfterViewInit, OnChanges, OnDestroy {
     if (this.userLocationMarker) {
       this.map.removeLayer(this.userLocationMarker);
     }
+    if (this.userAccuracyCircle) {
+      this.map.removeLayer(this.userAccuracyCircle);
+    }
 
     this.userLocationMarker = L.circleMarker(latlng, {
       radius: 10,
@@ -145,13 +161,13 @@ export class MapComponent implements AfterViewInit, OnChanges, OnDestroy {
     }).addTo(this.map);
 
     if (accuracy && accuracy > 0) {
-      L.circle(latlng, {
+      // Círculo de precisión en metros (radio real), sin dashArray para mejor rendimiento
+      this.userAccuracyCircle = L.circle(latlng, {
         radius: accuracy * 1.1,
         fillColor: '#3b82f6',
-        fillOpacity: 0.1,
+        fillOpacity: 0.08,
         color: '#3b82f6',
         weight: 1,
-        dashArray: '5, 5',
       }).addTo(this.map);
     }
   }
@@ -227,6 +243,12 @@ export class MapComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   ngOnDestroy(): void {
     this.resizeObserver?.disconnect();
+    if (this.userLocationMarker) {
+      this.map?.removeLayer(this.userLocationMarker);
+    }
+    if (this.userAccuracyCircle) {
+      this.map?.removeLayer(this.userAccuracyCircle);
+    }
     this.map?.remove();
     this.map = null;
   }

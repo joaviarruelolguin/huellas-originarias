@@ -45,6 +45,54 @@
   margin-bottom: 6px;
 }
 
+.hero-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.image-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  --size: 40px;
+}
+
+.hero-img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 18px;
+  margin-bottom: 6px;
+}
+
+.image-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: #94a3b8;
+  gap: 8px;
+  padding: 20px;
+  text-align: center;
+
+  ion-icon {
+    font-size: 32px;
+    opacity: 0.6;
+  }
+}
+
 .photo-credit {
   margin: 0 0 16px;
   color: #64748b;
