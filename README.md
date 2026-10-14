@@ -164,9 +164,14 @@ adb install android/app/build/outputs/apk/debug/app-debug.apk
 
 ---
 
+## 📜 precisión del contenido
+
+Las manchas de territorio son **aproximaciones** basadas en evidencia arqueológica y etnohistórica. Cada comunidad cita sus fuentes. Esta app tiene fines educativos y de divulgación.
+
+---
+
 ## 📬 Contacto / mantener el proyecto
 
-- Repositorio local: `D:\Code\huellas-originarias`
 - Issues: usar el panel de GitHub Issues para reportar bugs o solicitar nuevas comunidades/períodos.
 - Contenido: el archivo `communities.ts` es la "fuente de verdad" y está abierto a correcciones verificables con fuentes académicas.
 
