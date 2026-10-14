@@ -43,6 +43,8 @@ export class HomePage implements OnDestroy {
   readonly periods = PERIODS;
   readonly currentIndex = signal(0);
   readonly showWelcome = signal(true);
+  /** IDs de comunidades seleccionadas en el filtro. */
+  readonly selectedIds = signal<string[]>([]);
 
   private modal: HTMLIonModalElement | null = null;
 
@@ -50,10 +52,11 @@ export class HomePage implements OnDestroy {
     return this.periods[this.currentIndex()];
   }
 
-  /** Comunidades que tienen datos en el período activo. */
+  /** Comunidades con datos en el período activo Y seleccionadas en el filtro. */
   get activeCommunities() {
-    const id = this.currentPeriod.id;
-    return this.communities.filter((c) => c.periods[id]);
+    const periodId = this.currentPeriod.id;
+    const selected = this.selectedIds();
+    return this.communities.filter((c) => c.periods[periodId] && selected.includes(c.id));
   }
 
   enter(): void {
@@ -74,6 +77,10 @@ export class HomePage implements OnDestroy {
       },
     });
     await this.modal.present();
+  }
+
+  onSelectionChange(ids: string[]): void {
+    this.selectedIds.set(ids);
   }
 
   locate(): void {

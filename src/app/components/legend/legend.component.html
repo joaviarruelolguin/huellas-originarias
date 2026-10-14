@@ -1,13 +1,39 @@
 <div class="legend" [class.open]="open()">
-  <button type="button" class="legend-toggle" (click)="toggle()" aria-label="Leyenda">
+  <button type="button" class="legend-toggle" (click)="toggle()" aria-label="Filtro de comunidades">
     <ion-icon [name]="open() ? 'close' : 'layers'"></ion-icon>
     <span>Comunidades</span>
+    <span class="badge" [style.display]="selected().length < communities.length ? 'inline' : 'none'">
+      {{ selected().length }}/{{ communities.length }}
+    </span>
   </button>
 
-  <ul class="legend-list" *ngIf="open()">
-    <li *ngFor="let c of communities">
-      <span class="swatch" [style.background]="c.color"></span>
-      <span class="name">{{ c.name }}</span>
-    </li>
-  </ul>
+  <div class="legend-panel" *ngIf="open()">
+    <div class="panel-header">
+      <span class="panel-title">Filtrar comunidades</span>
+      <div class="panel-actions">
+        <button type="button" class="action-btn" (click)="selectAll()" [disabled]="selected().length === communities.length">
+          <ion-icon name="checkmark-done"></ion-icon>
+          Todas
+        </button>
+        <button type="button" class="action-btn" (click)="clearAll()" [disabled]="selected().length === 0">
+          <ion-icon name="close"></ion-icon>
+          Ninguna
+        </button>
+      </div>
+    </div>
+
+    <ul class="legend-list">
+      <li *ngFor="let c of communities" class="filter-item">
+        <label class="checkbox-label">
+          <input
+            type="checkbox"
+            [checked]="isSelected(c.id)"
+            (change)="toggleCommunity(c.id)"
+            [id]="'filter-' + c.id" />
+          <span class="swatch" [style.background]="c.color"></span>
+          <span class="name">{{ c.name }}</span>
+        </label>
+      </li>
+    </ul>
+  </div>
 </div>

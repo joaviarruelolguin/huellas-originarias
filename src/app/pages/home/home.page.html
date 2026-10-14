@@ -1,13 +1,16 @@
 <ion-content [fullscreen]="true">
-  <!-- Mapa con las manchas de territorio -->
+  <!-- Mapa con las manchas de territorio (filtradas) -->
   <app-map
-    [communities]="communities"
+    [communities]="activeCommunities"
     [activePeriod]="currentPeriod.id"
     (territoryClick)="onTerritoryClick($event)">
   </app-map>
 
-  <!-- Leyenda de comunidades -->
-  <app-legend [communities]="activeCommunities"></app-legend>
+  <!-- Filtro de comunidades (leyenda) -->
+  <app-legend
+    [communities]="activeCommunities"
+    (selectionChange)="onSelectionChange($event)">
+  </app-legend>
 
   <!-- FAB: mi ubicación -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="fab-locate">
