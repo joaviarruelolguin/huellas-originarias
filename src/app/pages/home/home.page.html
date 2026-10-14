@@ -9,6 +9,7 @@
   <!-- Filtro de comunidades (leyenda) -->
   <app-legend
     [communities]="allPeriodCommunities"
+    [initialSelection]="selectedIds()"
     (selectionChange)="onSelectionChange($event)">
   </app-legend>
 

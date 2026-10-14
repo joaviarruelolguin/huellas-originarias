@@ -114,12 +114,11 @@ export class MapComponent implements AfterViewInit, OnChanges, OnDestroy {
   /** Geolocalización del navegador: muestra un marcador azul pulsante en la posición del usuario. */
   locate(): void {
     if (!this.map) return;
-    // No usar setView: true para evitar conflictos de zoom/pan en CRS custom
     this.map.locate({ setView: false, maxZoom: 16, watch: false });
     this.map.once('locationfound', (e: L.LocationEvent) => {
       this.showUserLocation(e);
-      // Hacer zoom suave a la ubicación después de obtenerla
-      this.map?.flyTo(e.latlng, Math.min(this.map.getZoom(), 16), { duration: 1.2 });
+      // Zoom suave con setView nativo (más estable que flyTo en CRS custom)
+      this.map?.setView(e.latlng, Math.min(this.map.getZoom(), 16), { animate: true, duration: 1.2 });
     });
     this.map.once('locationerror', () => {
       console.warn('No se pudo obtener la ubicación del usuario');
