@@ -1,7 +1,9 @@
 import { Delaunay } from 'd3-delaunay';
-import polygonClipping from 'polygon-clipping';
+import polygonClipping, {
+  type MultiPolygon as ClipMultiPolygon,
+} from 'polygon-clipping';
 import type { Feature, MultiPolygon, Polygon } from 'geojson';
-import { ARGENTINA_RING } from '../data/argentina-boundary';
+import { ARGENTINA_MULTIPOLYGON } from '../data/argentina-boundary';
 
 /**
  * Factor de estiramiento N/S del mapa base (igual que el SVG de Wikimedia).
@@ -9,11 +11,16 @@ import { ARGENTINA_RING } from '../data/argentina-boundary';
 const STRETCH = 1.15;
 
 /**
- * Contorno real de Argentina, extraído del mapa base (Wikimedia Commons).
- * Se usa para recortar los territorios generados con Voronoi, de modo que
- * calzen exactamente con el mapa y no se desparramen al océano.
+ * Contorno real de Argentina (fuente: world.geo.json / Natural Earth).
+ * Se usa para recortar los territorios Voronoi a la frontera del país,
+ * de modo que no se desborden a Chile ni al océano.
+ * En el espacio proyectado del mapa (x = lng, y = -lat * STRETCH).
  */
-const ARGENTINA: number[][] = ARGENTINA_RING;
+const ARGENTINA_PROJ = ARGENTINA_MULTIPOLYGON.map((poly) =>
+  poly.map((ring) =>
+    ring.map(([lng, lat]): [number, number] => [lng, -lat * STRETCH])
+  )
+) as ClipMultiPolygon;
 
 /** Punto semilla de una comunidad (centro aproximado de su región). */
 export interface Seed {
@@ -35,9 +42,6 @@ export function voronoiTerritories(
   const delaunay = Delaunay.from(projected);
   const vor = delaunay.voronoi(projBounds);
 
-  // Contorno de Argentina en el espacio proyectado
-  const argProj = ARGENTINA.map(([lng, lat]): [number, number] => [lng, -lat * STRETCH]);
-
   const result = new Map<string, Feature<Polygon | MultiPolygon>>();
   seeds.forEach((s, i) => {
     const cell = vor.cellPolygon(i);
@@ -45,8 +49,8 @@ export function voronoiTerritories(
       return;
     }
     const cellRing = cell.slice(0, -1).map(([x, y]) => [x, y] as [number, number]);
-    // Recortar la celda al contorno de Argentina
-    const clipped = polygonClipping.intersection([cellRing], [argProj]);
+    // Recortar la celda al contorno real de Argentina
+    const clipped = polygonClipping.intersection([cellRing], ARGENTINA_PROJ);
     if (clipped.length === 0) {
       return;
     }
