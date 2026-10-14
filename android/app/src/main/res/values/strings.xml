@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Huellas Originarias</string>
+    <string name="title_activity_main">Huellas Originarias</string>
+    <string name="package_name">com.huellasoriginarias.app</string>
+    <string name="custom_url_scheme">com.huellasoriginarias.app</string>
+</resources>
