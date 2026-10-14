@@ -9,3 +9,29 @@
   height: 100%;
   background: #0a0e14;
 }
+
+/* Marcador de ubicación del usuario (punto azul pulsante) */
+.user-location-marker {
+  animation: pulse-blue 1.5s ease-out infinite;
+}
+
+@keyframes pulse-blue {
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.8);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+}
+
+/* Prevenir que el zoom control se superponga al FAB */
+.leaflet-control-zoom {
+  margin-bottom: 90px !important;
+  margin-right: 16px !important;
+}

@@ -62,6 +62,7 @@ export class MapComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   private map: L.Map | null = null;
   private territories: L.GeoJSON | null = null;
+  private userLocationMarker: L.CircleMarker | null = null;
   private resizeObserver?: ResizeObserver;
 
   ngAfterViewInit(): void {
@@ -110,9 +111,45 @@ export class MapComponent implements AfterViewInit, OnChanges, OnDestroy {
     }
   }
 
-  /** Geolocalización del navegador (en el APK se reemplaza por @capacitor/geolocation). */
+  /** Geolocalización del navegador: muestra un marcador azul pulsante en la posición del usuario. */
   locate(): void {
-    this.map?.locate({ setView: true, maxZoom: 16 });
+    if (!this.map) return;
+    this.map.locate({ setView: true, maxZoom: 16, watch: false });
+    this.map.once('locationfound', (e: L.LocationEvent) => this.showUserLocation(e));
+    this.map.once('locationerror', () => {
+      console.warn('No se pudo obtener la ubicación del usuario');
+    });
+  }
+
+  /** Dibuja/actualiza el marcador de la ubicación del usuario (círculo azul pulsante). */
+  private showUserLocation(e: L.LocationEvent): void {
+    if (!this.map) return;
+    const { latlng, accuracy } = e;
+
+    if (this.userLocationMarker) {
+      this.map.removeLayer(this.userLocationMarker);
+    }
+
+    this.userLocationMarker = L.circleMarker(latlng, {
+      radius: 10,
+      fillColor: '#3b82f6',
+      fillOpacity: 0.9,
+      color: '#fff',
+      weight: 2,
+      opacity: 1,
+      className: 'user-location-marker',
+    }).addTo(this.map);
+
+    if (accuracy && accuracy > 0) {
+      L.circle(latlng, {
+        radius: accuracy * 1.1,
+        fillColor: '#3b82f6',
+        fillOpacity: 0.1,
+        color: '#3b82f6',
+        weight: 1,
+        dashArray: '5, 5',
+      }).addTo(this.map);
+    }
   }
 
   private renderTerritories(): void {

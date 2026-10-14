@@ -157,16 +157,44 @@
     flex-shrink: 0;
     cursor: pointer;
     transition: all 0.15s ease;
+    position: relative;
 
     &:checked {
       background: var(--grad-primary);
       border-color: transparent;
     }
 
+    &::after {
+      content: '';
+      position: absolute;
+      left: 5px;
+      top: 2px;
+      width: 4px;
+      height: 8px;
+      border: solid #fff;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+      opacity: 0;
+      transition: opacity 0.15s ease;
+    }
+
+    &:checked::after {
+      opacity: 1;
+    }
+
     &:focus-visible {
       outline: 2px solid var(--ion-color-primary);
       outline-offset: 2px;
     }
+  }
+
+  /* Evitar que el label intercepte clicks del checkbox */
+  > * {
+    pointer-events: none;
+  }
+
+  input[type="checkbox"] {
+    pointer-events: auto;
   }
 
   .swatch {
