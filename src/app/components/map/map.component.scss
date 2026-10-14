@@ -58,3 +58,22 @@
 .leaflet-control-attribution a:hover {
   color: #fff !important;
 }
+
+/* Evitar que el círculo de precisión se renderice como cuadrado azul en zoom */
+.leaflet-container .leaflet-interactive {
+  pointer-events: auto;
+}
+
+.leaflet-container .user-location-marker {
+  pointer-events: none !important;
+}
+
+.leaflet-container .leaflet-interactive[stroke="#3b82f6"] {
+  pointer-events: none !important;
+}
+
+/* Asegurar que los círculos de precisión no bloqueen clicks */
+.leaflet-overlay-pane svg g g circle[stroke="#3b82f6"],
+.leaflet-overlay-pane svg g g circle[fill="#3b82f6"] {
+  pointer-events: none !important;
+}

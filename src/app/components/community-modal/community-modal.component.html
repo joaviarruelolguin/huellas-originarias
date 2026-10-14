@@ -28,7 +28,9 @@
         [alt]="community?.name"
         class="hero-img"
         (load)="onImageLoad()"
-        (error)="onImageError()" />
+        (error)="onImageError()"
+        #imgRef
+        (load)="checkImageLoaded($event.target)" />
 
       <div *ngIf="imageError()" class="image-error">
         <ion-icon name="image-off"></ion-icon>

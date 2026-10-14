@@ -37,6 +37,13 @@ export class CommunityModalComponent {
   readonly imageLoading = signal(true);
   readonly imageError = signal(false);
 
+  // Fallback para imágenes en caché que disparan load antes de attach
+  checkImageLoaded(img: HTMLImageElement): void {
+    if (img.complete && img.naturalWidth > 0) {
+      this.imageLoading.set(false);
+    }
+  }
+
   onImageLoad(): void {
     this.imageLoading.set(false);
   }

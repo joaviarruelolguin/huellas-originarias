@@ -158,6 +158,7 @@ export class MapComponent implements AfterViewInit, OnChanges, OnDestroy {
       weight: 2,
       opacity: 1,
       className: 'user-location-marker',
+      interactive: false, // No bloquea clicks
     }).addTo(this.map);
 
     if (accuracy && accuracy > 0) {
@@ -168,6 +169,7 @@ export class MapComponent implements AfterViewInit, OnChanges, OnDestroy {
         fillOpacity: 0.08,
         color: '#3b82f6',
         weight: 1,
+        interactive: false, // No bloquea clicks
       }).addTo(this.map);
     }
   }
@@ -235,6 +237,11 @@ export class MapComponent implements AfterViewInit, OnChanges, OnDestroy {
         });
       },
     }).addTo(this.map);
+
+    // Asegurar que los territorios estén encima de los marcadores de ubicación
+    this.territories.bringToFront();
+    if (this.userLocationMarker) this.userLocationMarker.bringToBack();
+    if (this.userAccuracyCircle) this.userAccuracyCircle.bringToBack();
   }
 
   private invalidateSize(): void {
