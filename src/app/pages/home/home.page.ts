@@ -68,7 +68,13 @@ export class HomePage implements OnDestroy {
     return this.periods[this.currentIndex()];
   }
 
-  /** Comunidades con datos en el período activo Y seleccionadas en el filtro. */
+  /** Todas las comunidades que tienen datos en el período activo (para la leyenda). */
+  get allPeriodCommunities() {
+    const periodId = this.currentPeriod.id;
+    return this.communities.filter((c) => c.periods[periodId]);
+  }
+
+  /** Comunidades con datos en el período activo Y seleccionadas en el filtro (para el mapa). */
   get activeCommunities() {
     const periodId = this.currentPeriod.id;
     const selected = this.selectedIds();
