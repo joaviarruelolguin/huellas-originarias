@@ -75,13 +75,17 @@ export class MapComponent implements AfterViewInit, OnChanges, OnDestroy {
         [-18, -50]
       ),
       maxBoundsViscosity: 1.0,
+      attributionControl: false, // sin el badge "Leaflet" por defecto
     });
+
+    // Atribución propia (el mapa base es CC BY-SA: hay que atribuir al autor)
+    L.control.attribution({ prefix: false }).addTo(this.map);
 
     // Capa base: SVG vectorial de Argentina (nítido a cualquier zoom)
     L.imageOverlay('assets/maps/argentina-location-map.svg', MAP_BOUNDS, {
       opacity: 1,
       interactive: false,
-      crossOrigin: true,
+      attribution: 'Mapa: NordNordWest / Wikimedia Commons (CC BY-SA 3.0)',
     }).addTo(this.map);
 
     L.control.zoom({ position: 'bottomright' }).addTo(this.map);
