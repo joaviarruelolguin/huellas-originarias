@@ -15,6 +15,7 @@ export interface PeriodData {
   modeOfLife: string;
   summary: string;
   images: string[];
+  photoCredit?: string;
   sources: string[];
 }
 

@@ -42,7 +42,14 @@
   aspect-ratio: 16 / 9;
   object-fit: cover;
   border-radius: 18px;
-  margin-bottom: 16px;
+  margin-bottom: 6px;
+}
+
+.photo-credit {
+  margin: 0 0 16px;
+  color: #64748b;
+  font-size: 0.72rem;
+  text-align: right;
 }
 
 .lineage {

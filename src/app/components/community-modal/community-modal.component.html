@@ -19,6 +19,7 @@
       [src]="data?.images[0]"
       [alt]="community?.name"
       class="hero-img" />
+    <p class="photo-credit" *ngIf="data?.photoCredit">{{ data?.photoCredit }}</p>
 
     <p class="lineage" *ngIf="community?.lineage">
       <ion-icon name="people"></ion-icon>
