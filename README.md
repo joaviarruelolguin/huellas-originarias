@@ -31,7 +31,9 @@ zona en ese período.
 ## Stack
 
 - **Ionic 9 + Angular 22** (standalone, zoneless, señales)
-- **Leaflet** + OpenStreetMap/Esri (mapa base, sin API key)
+- **Leaflet** + mapa base **SVG propio** ("Argentina location map.svg" de
+  Wikimedia Commons, dominio público) con CRS personalizado (equirectangular +
+  estiramiento N/S 115%). Sin API key, nítido a cualquier zoom.
 - **Tailwind CSS v4**
 - **Capacitor** (para APK en fase posterior)
 - Sin backend ni persistencia: el contenido está hardcodeado en `src/app/data/`

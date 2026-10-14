@@ -17,7 +17,35 @@ import type { Community } from '../../models/models';
 /**
  * Mapa de Argentina con las manchas de territorio de las comunidades
  * para el período activo, más la geolocalización del usuario.
+ *
+ * Usa como capa base el SVG "Argentina location map.svg" de Wikimedia
+ * Commons (dominio público / GFDL / CC-BA-SA), en proyección
+ * equirectangular con estiramiento N/S del 115%.
  */
+
+// Límites geográficos del mapa base (Wikimedia Commons):
+// N 21.0°S, S 56.5°S, W 76.5°W, E 52.5°W
+const MAP_BOUNDS = L.latLngBounds(
+  [-56.5, -76.5], // sudoeste
+  [-21.0, -52.5] // noreste
+);
+
+// Proyección equirectangular con estiramiento N/S del 115% (igual que el SVG).
+const StretchedLonLat = L.extend({}, L.Projection.LonLat, {
+  project: function (latlng: L.LatLng) {
+    return new L.Point(latlng.lng, -latlng.lat * 1.15);
+  },
+  unproject: function (point: L.Point) {
+    return new L.LatLng(-point.y / 1.15, point.x);
+  },
+});
+
+// CRS personalizado basado en CRS.Simple, con la proyección estirada.
+const ArgentinaCRS = L.extend({}, L.CRS.Simple, {
+  projection: StretchedLonLat,
+  transformation: new L.Transformation(1, 0, 1, 0),
+});
+
 @Component({
   selector: 'app-map',
   templateUrl: 'map.component.html',
@@ -37,33 +65,29 @@ export class MapComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   ngAfterViewInit(): void {
     this.map = L.map(this.canvasEl.nativeElement, {
+      crs: ArgentinaCRS,
       zoomControl: false,
       minZoom: 3,
-      // Limitar el mapa a Argentina (con un margen)
-      maxBounds: [
-        [-58, -78],
-        [-19, -50],
-      ],
+      maxZoom: 12,
+      // Limitar el desplazamiento al territorio del mapa base
+      maxBounds: L.latLngBounds(
+        [-60, -80],
+        [-18, -50]
+      ),
       maxBoundsViscosity: 1.0,
     });
-    this.map.setView([-38.5, -63.5], 5);
 
-    // Esri World Street Map (base) + capa de etiquetas
-    L.tileLayer(
-      'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',
-      {
-        maxZoom: 20,
-        attribution:
-          'Tiles &copy; <a href="https://www.esri.com/">Esri</a> &mdash; Esri, HERE, Garmin, (c) OpenStreetMap contributors, and the GIS user community',
-      }
-    ).addTo(this.map);
-
-    L.tileLayer(
-      'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}?f=png',
-      { maxZoom: 20, attribution: '' }
-    ).addTo(this.map);
+    // Capa base: SVG vectorial de Argentina (nítido a cualquier zoom)
+    L.imageOverlay('assets/maps/argentina-location-map.svg', MAP_BOUNDS, {
+      opacity: 1,
+      interactive: false,
+      crossOrigin: true,
+    }).addTo(this.map);
 
     L.control.zoom({ position: 'bottomright' }).addTo(this.map);
+
+    // Encajar la vista a todo el territorio
+    this.map.fitBounds(MAP_BOUNDS, { padding: [30, 30] });
 
     this.renderTerritories();
 
